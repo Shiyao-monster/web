@@ -87,7 +87,8 @@ html 总结
           e.preventDefault();   // 如果button在form中，如果不写e,则会自动跳转到新空白页面
           document.querySelector('.btn').style.background = ('purple');
       }); 
- 作用2: 在需要时候function的时候，页面多加载一个内容 
+ 作用2: 在需要时候function的时候，页面多加载一个内容， 针对于当这个位置了能出现两个选择，并且这两个选择的结果都已经在css里面定好了。 
+        如 score or error
             <div class='msg'> </div>
             msg = document.querySelector('.msg');
             msg.classList.add('score');
