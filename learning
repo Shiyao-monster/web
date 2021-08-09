@@ -1,0 +1,177 @@
+关于 xhttp.onload
+前端学习： https://www.youtube.com/watch?v=82hnvUYY6QA
+
+function
+    所有fuction 可以直接赋值给var, eg var a = ()=>{}
+
+    function name() {
+    //return 如果return 则必须写
+    }
+    
+   	function() {
+    //return 
+    }
+
+
+    () => {
+    //return 如果return 则必须写
+    }
+
+    (x,y) => x*y    直接return 
+  
+  
+******************************************************************************
+call back
+    example: first print 1 , then print 2. even though print 1 need 500s
+    function firstFunction(callback) {
+      setTimeout(function() {
+        console.log(1);
+        callback();
+      },
+      500);
+    }
+
+    firstFunction(function() {
+      console.log(2);
+    });
+    
+    General:
+    function first(callback){
+        // do something 
+        callback();
+    }
+    
+    first(function(){
+        // do the second thing
+    })
+ 
+ 
+ 
+******************************************************************************
+html 总结
+
+!+tab  ->模版
+ 当str 里有var, then ``, ${}     eg: `http//login=${username}`  或 '+ '  eg: "http//login='+username'"
+ <h1> </h1>  ->标题
+ <div id=" "> </div>   -> 是建立一个“块”  div section article ，语义是从无到有，逐渐增强的
+ 
+ ul 是建立一个竖着的带点的 list， 如不要点，格式要调
+ nav 是页面导航的标识
+ <nav>
+   <ul>
+          <li> username: '+ users[i].username + '</li>
+          <li id="community"><a href="community.html">Community</a></li>
+   </ul>
+ </nav>
+ 
+ 
+ <link rel="stylesheet" href="style.css">   ->rel说明本页面和链接到的页面的之间的关系
+ <a href="url">超链接文字</a>    -> a 是一个标签，超链接，点开才有东西。 link 是引用连接url的内容，而不是‘url’这个str
+ src用于替代这个元素，而href用于建立这个标签与外部资源之间的关系
+  引用css文件时：<link rel="stylesheet" href="style.css"> 
+  引用js文件时：<script src="myscript.js"></script>
+  引用图片：<a href="http:" target="_blank"><img src="xx.jpg" width="675" height="900" border="0"></a>
+
+
+ target由多个定义
+    _blank：表示将链接打开新窗口
+    _self:表示在目前窗口或框架里打开链接（默认的）
+    _parent:表示在父窗口或框架里打开链接
+    _top:表示在顶层框架里打开新链接
+ 
+ 
+ class 是表示类，用document.querySelector();
+ 作用1:如需要把 class 的东西都格式话，用class.如两个不同的btn,但是点击的时候都会变颜色
+       const btn = document.querySelector('.btn');
+       btn.addEventListener('mouseover', (e) => {        
+          e.preventDefault();   // 如果button在form中，如果不写e,则会自动跳转到新空白页面
+          document.querySelector('.btn').style.background = ('purple');
+      }); 
+ 作用2: 在需要时候function的时候，页面多加载一个内容 
+            <div class='msg'> </div>
+            msg = document.querySelector('.msg');
+            msg.classList.add('score');
+            msg.innerHTML = `Score: ${score}`;
+
+
+
+需要提交到后端的： 
+ <form id="my-form">
+        <h1>Log in</h1>
+   
+        <div>
+            <label for="username">Username</label>
+            <input type="text" name = "username" id="username">   name是输入的值， id是为了在js中定位
+        </div>
+        <div>
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password">  //type = password 则是将密码写成...
+        </div>
+
+        <input class="btn" type="submit" id="login-submit" value="Log in">   //id 可写可不写，写id,为了在js中写funtion定位，不写id，可以直接onclick
+        <input type="button" value="Go back" onclick="history.back(-1)" />   //class可写可不写
+ </form>
+
+js中
+const loginButton = document.getElementById("login-submit");
+loginButton.addEventListener('click', onSubmit);   //可以用click 或者 submit
+function onSubmit(e) {
+    e.preventDefault();   // form提交必须要写这个
+    
+    if (username.value === '' || password.value === '') {
+        msg.classList.add('error');
+        msg.innerHTML = 'Please enter all fields';
+    } else {
+        var a = login()
+        console.log(a)
+
+    }
+    
+}
+
+function login() {
+    var username = document.getElementById('username').value;
+    var password = document.getElementById('password').value;
+
+    let xhttp = new XMLHttpRequest();
+    xhttp.open("GET", `http://localhost:8080/login/login?username=${username}&password=${password}`, true);
+    xhttp.onload = function(e){
+        if(this.status==200) {
+            var users = JSON.parse(this.responseText);
+            if (username == users['username']) {
+                console.log( users['username']);
+                location.href = 'diary.html';
+            } else{
+                console.log('wrong');
+                msg.classList.add('error');
+                msg.innerHTML = 'Something Wrong. Please try again';
+            }
+        }
+    }
+    xhttp.send();
+    
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
